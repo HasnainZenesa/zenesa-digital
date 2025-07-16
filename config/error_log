@@ -1,0 +1,8 @@
+[03-Jul-2025 07:20:49 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/zeneffbv/public_html/config/database.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/zeneffbv/public_html/config/database.php on line 19
+[03-Jul-2025 07:20:49 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/zeneffbv/public_html/config/database.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/zeneffbv/public_html/config/database.php on line 19
