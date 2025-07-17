@@ -1235,4 +1235,206 @@
         </div>
 
     </section>
+    <!-- Modal HTML -->
+    <!-- popup form -->
+    <!-- Stylish Popup Form -->
+<!-- Popup Styles -->
+<style>
+    /* Blur Background */
+    #popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(5px);
+        background: rgba(0,0,0,0.2);
+        z-index: 9998;
+    }
+
+    #popup-form {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 30px;
+        width: 90%;
+        max-width: 400px;
+        z-index: 9999;
+        font-family: Arial, sans-serif;
+        position: fixed;
+    }
+
+    #popup-form p {
+        margin-top: 0;
+        font-size: 16px;
+        text-align: left;
+        color: #fff;
+    }
+
+    #popup-form input,
+    #popup-form textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    #popup-form input:focus,
+    #popup-form textarea:focus {
+        outline: none;
+        border: none;
+    }
+
+    #popup-form textarea {
+        height: 120px;
+        resize: none;
+    }
+
+    #popup-form button {
+        width: 100%;
+        padding: 12px;
+        background-color: #00C8A4;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    #popup-form button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    /* Spinner style */
+    .spinner {
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top: 3px solid #fff;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Close icon */
+    #close-popup {
+        position: absolute;
+        top: 12px;
+        right: 15px;
+        font-size: 20px;
+        color: #ffffff;
+        cursor: pointer;
+        background: rgba(0,0,0,0.3);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        transition: background 0.2s ease-in-out;
+    }
+
+    #close-popup:hover {
+        background: rgba(0,0,0,0.5);
+    }
+</style>
+
+<!-- Overlay -->
+<div id="popup-overlay"></div>
+
+<!-- Form -->
+<div id="popup-form">
+    <span id="close-popup">&times;</span>
+    <form id="userInfoForm">
+        @csrf
+        <p>Looking for professional services? Fill out the quick form below and one of our senior business consultants will reach out to you shortly to assist you.</p>
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="text" name="phone" placeholder="Your Phone" required>
+        <textarea name="message" placeholder="Leave Your Questions Or Queries." required></textarea>
+        <button type="submit" id="submitBtn">
+            Submit
+        </button>
+    </form>
+</div>
+
+<script>
+    const popupForm = document.getElementById('popup-form');
+    const popupOverlay = document.getElementById('popup-overlay');
+
+    // Show popup after 1 second
+    setTimeout(() => {
+        popupForm.style.display = 'block';
+        popupOverlay.style.display = 'block';
+    }, 30000);
+
+    // Close form on clicking overlay
+    popupOverlay.addEventListener('click', closePopup);
+    // Close form on clicking (x)
+    document.getElementById('close-popup').addEventListener('click', closePopup);
+
+    function closePopup() {
+        popupForm.style.display = 'none';
+        popupOverlay.style.display = 'none';
+    }
+
+    // Handle form submit
+    document.getElementById('userInfoForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerHTML = 'Submitting <span class="spinner"></span>';
+
+        let formData = new FormData(this);
+
+        fetch("{{ route('send.popup.email') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            btn.disabled = false;
+            btn.innerHTML = 'Submit';
+
+            if (data.success) {
+                alert("Thanks! We'll contact you shortly.");
+                closePopup();
+                this.reset();
+            } else {
+                alert("Something went wrong.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            btn.disabled = false;
+            btn.innerHTML = 'Submit';
+            alert("Error sending form.");
+        });
+    });
+</script>
+
+
+
 @endsection

@@ -47,9 +47,9 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/mobile.css">
     <style>
-        #videoModal {
-  display: none !important;
-}
+        #videoModal:first-child {
+            display: none !important;
+        }
     </style>
     
             <!-- Meta Pixel Code -->

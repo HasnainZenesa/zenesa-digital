@@ -5,7 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AgreementController;
 use App\Http\Controllers\StripeHostedController;
-
+use App\Http\Controllers\PopupFormController;
 
 
 // Frontend 
@@ -45,3 +45,6 @@ Route::get('/admin/generate-link', function () {
 })->name('admin.generate.link.form');
 
 Route::post('/admin/generate-link', [StripeHostedController::class, 'generateLink'])->name('admin.generate.link');
+// route for popup form
+Route::post('/send-popup-email', [PopupFormController::class, 'send'])->name('send.popup.email');
+
