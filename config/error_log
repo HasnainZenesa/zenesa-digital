@@ -6,3 +6,7 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/zeneffbv/public_html/config/database.php on line 19
+[09-Jul-2025 02:46:11 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/zeneffbv/public_html/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/zeneffbv/public_html/config/app.php on line 16
